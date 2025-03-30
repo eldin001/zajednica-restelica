@@ -1,0 +1,39 @@
+html {
+    scroll-behavior: smooth;
+}
+body {
+    padding-top: 0;
+}
+section {
+    scroll-margin-top: 60px;
+}
+
+/* Animazione dello sfondo con gradiente */
+.bg-gradient-animation {
+    background-size: 200% 200%;
+    animation: gradient-animation 15s ease infinite;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* stile per il pulsante di traduzione */
+.language-switcher {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    transition: transform 0.3s;
+}
+.language-switcher:hover {
+    transform: scale(1.05);
+}
