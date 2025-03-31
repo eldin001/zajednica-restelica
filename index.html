@@ -1,73 +1,690 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="bs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sito in Manutenzione</title>
+    <title>Solidarna Zajednica Restelica</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .spin-slow {
-            animation: spin 8s linear infinite;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
-<body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white text-center">
-            <div class="flex justify-center mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+<body class="bg-white">
+    <!-- Pulsante di traduzione -->
+    <div class="language-switcher">
+        <button id="translate-button" class="flex items-center bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-language text-xl mr-2"></i>
+            <span class="translate" data-bs="Promijeni jezik" data-it="Cambia lingua">Promijeni jezik</span>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="absolute inset-x-0 top-0 z-50">
+        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+            <div class="flex lg:flex-1">
+                <a href="#" class="-m-1.5 p-1.5 flex items-center space-x-2">
+                    <i class="fas fa-hands-helping text-2xl text-blue-600"></i>
+                    <span class="font-bold text-xl text-gray-900">Zajednica Restelica<br>Cuneo</span>
+                </a>
             </div>
-            <h1 class="text-3xl font-bold mb-2">Sito in Manutenzione</h1>
-            <p class="text-blue-100">Stiamo lavorando per migliorare il  sito</p>
+            <div class="flex lg:hidden">
+                <button type="button" id="mobile-menu-button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only translate" data-bs="Otvori glavni meni" data-it="Apri menu principale">Otvori glavni meni</span>
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-12">
+                <a href="#home" class="text-sm font-semibold leading-6 text-gray-900 translate" data-bs="Početna" data-it="Home">Početna</a>
+                <a href="#chi-siamo" class="text-sm font-semibold leading-6 text-gray-900 translate" data-bs="O Nama" data-it="Chi Siamo">O Nama</a>
+                <a href="#come-funziona" class="text-sm font-semibold leading-6 text-gray-900 translate" data-bs="Kako Funkcioniše" data-it="Come Funziona">Kako Funkcioniše</a>
+                <a href="#iscrizione" class="text-sm font-semibold leading-6 text-gray-900 translate" data-bs="Zatraži Pomoć" data-it="Richiedi Aiuto">Zatraži Pomoć</a>
+                <a href="#contatti" class="text-sm font-semibold leading-6 text-gray-900 translate" data-bs="Kontakt" data-it="Contatti">Kontakt</a>
+            </div>
+            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                <a href="#iscrizione" class="text-sm font-semibold leading-6 text-blue-600 translate" data-bs="Zatraži pomoć" data-it="Richiedi aiuto">Zatraži pomoć <span aria-hidden="true">&rarr;</span></a>
+            </div>
+        </nav>
+        
+        <!-- Mobile menu, show/hide basato sullo stato del menu -->
+        <div id="mobile-menu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+            <!-- Background backdrop -->
+            <div class="fixed inset-0 z-50"></div>
+            <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5 flex items-center space-x-2">
+                        <i class="fas fa-hands-helping text-2xl text-blue-600"></i>
+                        <span class="font-bold text-xl">Restelica</span>
+                    </a>
+                    <button type="button" id="close-mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only translate" data-bs="Zatvori meni" data-it="Chiudi menu">Zatvori meni</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#home" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 translate" data-bs="Početna" data-it="Home">Početna</a>
+                            <a href="#chi-siamo" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 translate" data-bs="O Nama" data-it="Chi Siamo">O Nama</a>
+                            <a href="#come-funziona" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 translate" data-bs="Kako Funkcioniše" data-it="Come Funziona">Kako Funkcioniše</a>
+                            <a href="#iscrizione" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 translate" data-bs="Zatraži Pomoć" data-it="Richiedi Aiuto">Zatraži Pomoć</a>
+                            <a href="#contatti" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 translate" data-bs="Kontakt" data-it="Contatti">Kontakt</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+
+    <!-- Hero Section  -->
+    <div id="home" class="relative isolate px-6 pt-14 lg:px-8">
+        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+            <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-blue-600 to-blue-800 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
         
-        <div class="p-6 space-y-6">
-            <div class="text-center">
-                <p class="text-lg">Ci scusiamo per l'inconveniente, ma stiamo effettuando alcuni aggiornamenti necessari.</p>
-                <p class="text-gray-600 mt-2">Il nostro team tecnico sta lavorando duramente per completare gli aggiornamenti il più rapidamente possibile.</p>
-            </div>
-            
-            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
-                <div class="flex items-center justify-center space-x-2 text-indigo-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p class="font-medium">Torneremo online presto.</p>
-                </div>
-               <!--  <p class="text-center mt-2 text-xl font-bold text-indigo-800" id="return-date">30 Marzo 2025, 18:00 CET</p> -->
-            </div>
-            
-            <!-- <div class="border-t border-gray-200 pt-4">
-                <p class="text-center text-gray-500 text-sm">Per qualsiasi informazione, contattaci:</p>
-                <div class="flex justify-center mt-2 space-x-4">
-                    <a href="mailto:support@tuodominio.com" class="flex items-center text-blue-600 hover:text-blue-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        support@tuodominio.com
+        <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+            <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+                <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                    <span class="translate" data-bs="Solidarna zajednica za uzajamnu pomoć" data-it="Comunità solidale per l'aiuto reciproco">Solidarna zajednica za uzajamnu pomoć</span> 
+                    <a href="#chi-siamo" class="font-semibold text-blue-600">
+                        <span class="absolute inset-0" aria-hidden="true"></span>
+                        <span class="translate" data-bs="Saznaj više" data-it="Scopri di più">Saznaj više</span> 
+                        <span aria-hidden="true">&rarr;</span>
+                        
                     </a>
                 </div>
-            </div> -->
+            </div>
+            <div class="text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl translate" data-bs="Solidarna Zajednica Restelica" data-it="Comunità Solidale Restelica">Solidarna Zajednica Restelica</h1>
+                <p class="mt-6 text-lg leading-8 text-gray-600 translate" data-bs="Zajedno gradimo mrežu podrške za članove naše zajednice. Kroz međusobnu pomoć i solidarnost, stvaramo sigurnost za sve u trenucima potrebe." data-it="Insieme costruiamo una rete di supporto per i membri della nostra comunità. Attraverso l'aiuto reciproco e la solidarietà, creiamo sicurezza per tutti nei momenti di bisogno.">Zajedno gradimo mrežu podrške za članove naše zajednice. Kroz međusobnu pomoć i solidarnost, stvaramo sigurnost za sve u trenucima potrebe.</p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="#iscrizione" class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 translate" data-bs="Zatraži pomoć" data-it="Richiedi aiuto">Zatraži pomoć</a>
+                    <a href="#chi-siamo" class="text-sm font-semibold leading-6 text-gray-900">
+                        <span class="translate" data-bs="Saznaj više" data-it="Scopri di più">Saznaj više</span> 
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
         </div>
         
-        <div class="bg-gray-50 py-4 px-6 border-t border-gray-200">
-            <p class="text-center text-sm text-gray-600">Grazie per la tua pazienza</p>
+        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+            <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-blue-500 to-blue-700 opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        </div>
+    </div>
+
+    <!-- Chi Siamo Section -->
+    <section id="chi-siamo" class="py-16 sm:py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 sm:mb-16 relative">
+                <span class="relative z-10 translate" data-bs="O Nama" data-it="Chi Siamo">O Nama</span>
+                <span class="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-16 sm:w-20 h-1 bg-blue-600"></span>
+            </h2>
+            <div class="flex flex-col md:flex-row items-center md:space-x-12">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <img src="img/img.jpeg" alt="Zajednica Restelica" class="rounded-lg shadow-xl w-full h-auto object-cover transform hover:scale-105 transition-transform duration-500 ease-in-out">
+                </div>
+                <div class="md:w-1/2">
+                    <p class="text-lg leading-relaxed mb-6 translate" data-bs="Mi smo zajednica stanovnika porijeklom iz Restelice koji žive u provinciji Cuneo. Povezuje nas snažan osjećaj pripadnosti i želja da pomažemo jedni drugima u teškim trenucima." data-it="Siamo una comunità di residenti originari di Restelica che vivono nella provincia di Cuneo. Ci unisce un forte senso di appartenenza e il desiderio di aiutarci a vicenda nei momenti difficili.">
+                        Mi smo zajednica stanovnika porijeklom iz Restelice koji žive u provinciji Cuneo. Povezuje nas snažan osjećaj pripadnosti i želja da pomažemo jedni drugima u teškim trenucima.
+                    </p>
+                    <p class="text-lg leading-relaxed mb-6 translate" data-bs="Naša inicijativa proizlazi iz tradicije uzajamne pomoći koja karakteriše našu kulturu, donesenu ovdje u Italiju i prilagođenu našoj novoj stvarnosti." data-it="La nostra iniziativa deriva dalla tradizione di mutuo aiuto che caratterizza la nostra cultura, portata qui in Italia e adattata alla nostra nuova realtà.">
+                        Naša inicijativa proizlazi iz tradicije uzajamne pomoći koja karakteriše našu kulturu, donesenu ovdje u Italiju i prilagođenu našoj novoj stvarnosti.
+                    </p>
+                    <p class="text-lg leading-relaxed translate" data-bs="Vjerujemo da udruživanjem malih mjesečnih sredstava možemo stvoriti značajnu mrežu zaštite za sve članove naše zajednice." data-it="Crediamo che mettendo insieme piccoli contributi mensili possiamo creare una significativa rete di protezione per tutti i membri della nostra comunità.">
+                        Vjerujemo da udruživanjem malih mjesečnih sredstava možemo stvoriti značajnu mrežu zaštite za sve članove naše zajednice.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+<!-- Come Funziona Section - Solo intestazione e parte superiore -->
+<section id="come-funziona" class="bg-gray-50 py-24 sm:py-32">
+    <div class="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
+        <h2 class="text-center text-base/7 font-semibold text-blue-600 translate" data-bs="Naš sistem" data-it="Il nostro sistema">Naš sistem</h2>
+        <p class="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-gray-950 sm:text-5xl translate" data-bs="Kako Funkcioniše" data-it="Come Funziona">Kako Funkcioniše</p>
+        
+        <div class="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
+            <!-- Doprinos - Colonna sinistra grande -->
+            <div class="relative lg:row-span-2">
+                <div class="absolute inset-px rounded-lg bg-white lg:rounded-l-[2rem]"></div>
+                <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
+                    <div class="px-8 pt-8 pb-8 sm:px-10 sm:pt-10 sm:pb-10">
+                        <div class="text-blue-600 text-3xl mb-4 flex max-lg:justify-center">
+                            <i class="fas fa-euro-sign"></i>
+                        </div>
+                        <p class="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center translate" data-bs="Doprinos" data-it="Contributo">Doprinos</p>
+                        <p class="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center translate" data-bs="Svaki član doprinosi sa 20€ mjesečno u zajednički fond, stvarajući rezervu za hitne slučajeve. Ova sredstva se pažljivo čuvaju i koriste isključivo u slučajevima kada je članovima potrebna pomoć." data-it="Ogni membro contribuisce con 20€ mensili a un fondo comune, creando una riserva per le emergenze. Questi fondi vengono attentamente conservati e utilizzati esclusivamente nei casi in cui i membri necessitano di assistenza.">Svaki član doprinosi sa 20€ mjesečno u zajednički fond, stvarajući rezervu za hitne slučajeve. Ova sredstva se pažljivo čuvaju i koriste isključivo u slučajevima kada je članovima potrebna pomoć.</p>
+                    </div>
+                </div>
+                <div class="pointer-events-none absolute inset-px rounded-lg ring-1 shadow-sm ring-black/5 lg:rounded-l-[2rem]"></div>
+            </div>
+            
+            <!-- Pomoć - Blocco in alto a destra -->
+            <div class="relative max-lg:row-start-1">
+                <div class="absolute inset-px rounded-lg bg-white max-lg:rounded-t-[2rem]"></div>
+                <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
+                    <div class="px-8 pt-8 pb-8 sm:px-10 sm:pt-10 sm:pb-10">
+                        <div class="text-blue-600 text-3xl mb-4 flex max-lg:justify-center">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <p class="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center translate" data-bs="Pomoć" data-it="Assistenza">Pomoć</p>
+                        <p class="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center translate" data-bs="U slučaju hitne potrebe, članovi mogu zatražiti financijsku pomoć iz fonda, koju procjenjuje odbor." data-it="In caso di necessità urgente, i membri possono richiedere assistenza finanziaria dal fondo, che viene valutata dal comitato.">U slučaju hitne potrebe, članovi mogu zatražiti financijsku pomoć iz fonda, koju procjenjuje odbor.</p>
+                    </div>
+                </div>
+                <div class="pointer-events-none absolute inset-px rounded-lg ring-1 shadow-sm ring-black/5 max-lg:rounded-t-[2rem]"></div>
+            </div>
+            
+            <!-- Sigurnost - Blocco in basso a destra -->
+            <div class="relative max-lg:row-start-3 lg:col-start-2 lg:row-start-2">
+                <div class="absolute inset-px rounded-lg bg-white"></div>
+                <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
+                    <div class="px-8 pt-8 sm:px-10 sm:pt-10">
+                        <div class="text-blue-600 text-3xl mb-4 flex max-lg:justify-center">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <p class="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center translate" data-bs="Sigurnost" data-it="Sicurezza">Sigurnost</p>
+                        <p class="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center translate" data-bs="Svi zahtjevi se obrađuju povjerljivo, a sredstva se koriste isključivo za pomoć članovima." data-it="Tutte le richieste vengono elaborate in modo confidenziale e i fondi vengono utilizzati esclusivamente per aiutare i membri.">Svi zahtjevi se obrađuju povjerljivo, a sredstva se koriste isključivo za pomoć članovima.</p>
+                    </div>
+                </div>
+                <div class="pointer-events-none absolute inset-px rounded-lg ring-1 shadow-sm ring-black/5"></div>
+            </div>
+            
+            <!-- Zajednica - Colonna grande a destra -->
+            <div class="relative lg:row-span-2">
+                <div class="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
+                <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]">
+                    <div class="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
+                        <div class="text-blue-600 text-3xl mb-4 flex max-lg:justify-center">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <p class="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center translate" data-bs="Zajednica" data-it="Comunità">Zajednica</p>
+                        <p class="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center translate" data-bs="Pored financijske pomoći, nudimo moralnu i praktičnu podršku kroz mrežu kontakata zajednice. Zajedno smo jači i možemo premostiti sve teškoće." data-it="Oltre all'assistenza finanziaria, offriamo supporto morale e pratico attraverso la rete di contatti della comunità. Insieme siamo più forti e possiamo superare tutte le difficoltà.">Pored financijske pomoći, nudimo moralnu i praktičnu podršku kroz mrežu kontakata zajednice. Zajedno smo jači i možemo premostiti sve teškoće.</p>
+                    </div>
+                </div>
+                <div class="pointer-events-none absolute inset-px rounded-lg ring-1 shadow-sm ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- International Contributors Section -->
+<section id="international" class="py-24 sm:py-32 bg-gradient-to-b from-white to-blue-50">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center mb-16">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl translate" data-bs="Međunarodna Saradnja" data-it="Collaborazione Internazionale">Međunarodna Saradnja</h2>
+            <p class="mt-2 text-lg leading-8 text-gray-600 translate" data-bs="Pozivamo sve članove zajednice Restelica širom Evrope da se pridruže našoj inicijativi" data-it="Invitiamo tutti i membri della comunità di Restelica in Europa a unirsi alla nostra iniziativa">Pozivamo sve članove zajednice Restelica širom Evrope da se pridruže našoj inicijativi</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <!-- Bosnian Card -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 right-0 p-2">
+                    <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/ba.svg" alt="Bosanski" class="w-4 h-4 mr-1">
+                        BS
+                    </span>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Jesi li iz Restelice?</h3>
+                    <p class="text-gray-600 mb-6">Ako si porijeklom iz Restelice, a živiš u drugoj evropskoj zemlji, i dalje možeš doprinijeti našem projektu! Tvoja podrška je dragocjena za našu zajednicu.</p>
+                    <div class="flex justify-between items-center mt-auto">
+                        <a href="#contatti" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            Kontaktiraj nas
+                            <svg class="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Italian Card -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 right-0 p-2">
+                    <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/it.svg" alt="Italiano" class="w-4 h-4 mr-1">
+                        IT
+                    </span>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Sei originario di Restelica?</h3>
+                    <p class="text-gray-600 mb-6">Se provieni da Restelica ma vivi in un altro paese europeo, puoi comunque contribuire al nostro progetto! Il tuo supporto è prezioso per la nostra comunità.</p>
+                    <div class="flex justify-between items-center mt-auto">
+                        <a href="#contatti" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            Contattaci
+                            <svg class="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- German Card -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 right-0 p-2">
+                    <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/de.svg" alt="Deutsch" class="w-4 h-4 mr-1">
+                        DE
+                    </span>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Stammst du aus Restelica?</h3>
+                    <p class="text-gray-600 mb-6">Wenn du aus Restelica stammst, aber in einem anderen europäischen Land lebst, kannst du trotzdem zu unserem Projekt beitragen! Deine Unterstützung ist wertvoll für unsere Gemeinschaft.</p>
+                    <div class="flex justify-between items-center mt-auto">
+                        <a href="#contatti" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            Kontaktiere uns
+                            <svg class="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- French Card -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="absolute top-0 right-0 p-2">
+                    <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/fr.svg" alt="Français" class="w-4 h-4 mr-1">
+                        FR
+                    </span>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Êtes-vous originaire de Restelica?</h3>
+                    <p class="text-gray-600 mb-6">Si vous êtes originaire de Restelica mais que vous vivez dans un autre pays européen, vous pouvez toujours contribuer à notre projet! Votre soutien est précieux pour notre communauté.</p>
+                    <div class="flex justify-between items-center mt-auto">
+                        <a href="#contatti" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            Contactez-nous
+                            <svg class="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to action section below cards -->
+        <div class="mt-16 flex justify-center">
+            <div class="max-w-2xl rounded-xl bg-blue-50 p-8 shadow-sm ring-1 ring-blue-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4 text-center translate" data-bs="Zajedno smo jači!" data-it="Insieme siamo più forti!">Zajedno smo jači!</h3>
+                <p class="text-gray-700 text-center mb-6 translate" data-bs="Svaki doprinos, bez obzira na veličinu, pomaže u izgradnji sigurnije budućnosti za našu zajednicu. Pridružite nam se danas!" data-it="Ogni contributo, indipendentemente dalle dimensioni, aiuta a costruire un futuro più sicuro per la nostra comunità. Unisciti a noi oggi!">Svaki doprinos, bez obzira na veličinu, pomaže u izgradnji sigurnije budućnosti za našu zajednicu. Pridružite nam se danas!</p>
+                <div class="text-center">
+                    <a href="#contatti" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 translate" data-bs="Pridruži se inicijativi" data-it="Unisciti all'iniziativa">Pridruži se inicijativi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Financial Contribution Section - No Animation, Mobile-Friendly -->
+<section id="donazioni" class="py-24 sm:py-32 overflow-hidden relative">
+    <!-- Background pattern - static -->
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute inset-y-0 right-0 w-1/2 bg-blue-50"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-3 translate" data-bs="Financijski Doprinos" data-it="Contributo Finanziario">Financijski Doprinos</h2>
+            <div class="w-24 h-1 bg-blue-600 mx-auto mb-6 rounded-full"></div>
+            <p class="max-w-2xl mx-auto text-lg text-gray-600 translate" data-bs="Vaš doprinos jača našu zajednicu i stvara sigurnost za sve članove" data-it="Il tuo contributo rafforza la nostra comunità e crea sicurezza per tutti i membri">Vaš doprinos jača našu zajednicu i stvara sigurnost za sve članove</p>
+        </div>
+
+        <!-- Main card - simpler design, mobile-friendly -->
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <!-- Card top part with simplified design -->
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-8">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+                            <i class="fas fa-hand-holding-heart text-blue-600 text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-4 translate" data-bs="Podržite Našu Zajednicu" data-it="Sostieni La Nostra Comunità">Podržite Našu Zajednicu</h3>
+                    <p class="text-blue-100 text-center translate" data-bs="Vaš mjesečni doprinos omogućava našoj zajednici da pruži podršku kada je najpotrebnija" data-it="Il tuo contributo mensile permette alla nostra comunità di fornire supporto quando è più necessario">Vaš mjesečni doprinos omogućava našoj zajednici da pruži podršku kada je najpotrebnija</p>
+                </div>
+                
+                <!-- IBAN information - mobile optimized -->
+                <div class="p-6 sm:p-8">
+                    <div class="bg-blue-50 rounded-lg p-4 sm:p-6 mb-8">
+                        <div class="flex flex-col space-y-3">
+                            <!-- Bank Name -->
+                            <div class="flex justify-between items-center flex-wrap">
+                                <div class="text-sm text-gray-600 translate" data-bs="Banka" data-it="Banca">Banka</div>
+                                <div class="font-medium text-gray-900">UnicreditBank Italia</div>
+                            </div>
+                            
+                            <!-- Account Holder -->
+                            <div class="flex justify-between items-center flex-wrap">
+                                <div class="text-sm text-gray-600 translate" data-bs="Korisnik" data-it="Intestatario">Korisnik</div>
+                                <div class="font-medium text-gray-900">Associazione Restelica</div>
+                            </div>
+                            
+                            <!-- IBAN with copy button - improved for mobile -->
+                            <div class="mt-2 pb-2 border-b border-blue-100">
+                                <div class="flex items-center justify-between flex-wrap">
+                                    <div class="text-sm text-gray-600 mb-1 sm:mb-0">IBAN</div>
+                                    <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                        <span id="iban-number" class="font-mono font-medium text-gray-900 text-sm sm:text-base break-all">IT27B0200873920000106987454</span>
+                                        <button id="copy-iban" class="text-blue-600 hover:text-blue-800 transition-colors p-1 focus:outline-none ml-2" aria-label="Copy IBAN">
+                                            <i class="far fa-copy"></i>
+                                            <span id="copy-tooltip" class="hidden absolute bg-gray-900 text-white text-xs rounded py-1 px-2 -mt-8 translate" data-bs="Kopirano!" data-it="Copiato!">Kopirano!</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Suggested amount -->
+                            <div class="flex justify-between items-center mt-3 flex-wrap">
+                                <div class="text-sm text-gray-600 translate" data-bs="Preporučeni doprinos" data-it="Contributo consigliato">Preporučeni doprinos</div>
+                                <div class="font-medium text-green-600">€20 <span class="text-gray-600 text-sm translate" data-bs="mjesečno" data-it="mensile">mjesečno</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment description with icon - simplified layout -->
+                    <div class="flex items-start space-x-3 mb-8">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-info-circle text-blue-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-1 translate" data-bs="Opis plaćanja" data-it="Causale del bonifico">Opis plaćanja</h4>
+                            <p class="text-sm text-gray-600 translate" data-bs="Molimo navedite 'Doprinos zajednici' i vaše ime i prezime u opisu plaćanja" data-it="Si prega di indicare 'Contributo comunitario' e il proprio nome e cognome nella causale del bonifico">Molimo navedite "Doprinos zajednici" i vaše ime i prezime u opisu plaćanja</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Message -->
+                    <div class="text-center">
+                        <p class="text-gray-800 mb-6 italic text-sm sm:text-base translate" data-bs="Svaki doprinos, bez obzira na iznos, dragocjen je za našu zajednicu i omogućava nam da podržimo one koji su u potrebi." data-it="Ogni contributo, indipendentemente dall'importo, è prezioso per la nostra comunità e ci permette di sostenere chi è in difficoltà.">Svaki doprinos, bez obzira na iznos, dragocjen je za našu zajednicu i omogućava nam da podržimo one koji su u potrebi.</p>
+                        
+                        <div class="flex justify-center">
+                            <a href="#iscrizione" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 translate" data-bs="Zatražite pomoć" data-it="Richiedi assistenza">Zatražite pomoć</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security note -->
+            <div class="mt-8 text-center">
+                <div class="inline-flex items-center text-sm text-gray-600">
+                    <i class="fas fa-lock text-gray-400 mr-2"></i>
+                    <span class="translate" data-bs="Svi doprinosi se koriste isključivo za pomoć članovima zajednice" data-it="Tutti i contributi vengono utilizzati esclusivamente per aiutare i membri della comunità">Svi doprinosi se koriste isključivo za pomoć članovima zajednice</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Richiesta di Assistenza Section -->
+    <section id="iscrizione" class="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+        <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
+            <div class="relative left-1/2 -z-10 aspect-1155/678 w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-blue-400 to-blue-700 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        </div>
+        <div class="mx-auto max-w-2xl text-center">
+            <h2 class="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl translate" data-bs="Zatraži Pomoć" data-it="Richiedi Aiuto">Zatraži Pomoć</h2>
+            <p class="mt-2 text-lg/8 text-gray-600 translate" data-bs="Nema sramote u traženju pomoći. Svi se ponekad nalazimo u teškim situacijama, i zato smo tu jedni za druge." data-it="Non c'è vergogna nel chiedere aiuto. Tutti ci troviamo a volte in situazioni difficili, ed è per questo che siamo qui gli uni per gli altri.">Nema sramote u traženju pomoći. Svi se ponekad nalazimo u teškim situacijama, i zato smo tu jedni za druge.</p>
+        </div>
+        
+
+<!-- Form completo con feedback di conferma -->
+<form action="https://formspree.io/f/mgvozdkp" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20" id="assistanceForm">
+    <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+        <div class="sm:col-span-2">
+            <label for="nome" class="block text-sm/6 font-semibold text-gray-900 translate" data-bs="Ime i Prezime" data-it="Nome e Cognome">Ime i Prezime</label>
+            <div class="mt-2.5">
+                <input type="text" name="nome" id="nome" required autocomplete="name" class="block w-full rounded-md border border-gray-300 bg-white px-3.5 py-2 text-gray-900 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600">
+            </div>
+        </div>
+        
+        <div>
+            <label for="email" class="block text-sm/6 font-semibold text-gray-900">Email</label>
+            <div class="mt-2.5">
+                <input type="email" name="email" id="email" required autocomplete="email" class="block w-full rounded-md border border-gray-300 bg-white px-3.5 py-2 text-gray-900 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600">
+            </div>
+        </div>
+        
+        <div>
+            <label for="telefono" class="block text-sm/6 font-semibold text-gray-900 translate" data-bs="Telefon" data-it="Telefono">Telefon</label>
+            <div class="mt-2.5">
+                <input type="tel" name="telefono" id="telefono" required autocomplete="tel" class="block w-full rounded-md border border-gray-300 bg-white px-3.5 py-2 text-gray-900 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600">
+            </div>
+        </div>
+        
+        <div class="sm:col-span-2">
+            <label for="tipo_emergenza" class="block text-sm/6 font-semibold text-gray-900 translate" data-bs="Vrsta Hitne Situacije" data-it="Tipo di Emergenza">Vrsta Hitne Situacije</label>
+            <div class="mt-2.5">
+                <select id="tipo_emergenza" name="tipo_emergenza" required class="block w-full rounded-md border border-gray-300 bg-white px-3.5 py-2 text-gray-900 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600">
+                    <option value="" class="translate" data-bs="Odaberi..." data-it="Seleziona...">Odaberi...</option>
+                    <option value="medica" class="translate" data-bs="Medicinska Hitnost" data-it="Emergenza Medica">Medicinska Hitnost</option>
+                    <option value="economica" class="translate" data-bs="Ekonomske Poteškoće" data-it="Difficoltà Economiche">Ekonomske Poteškoće</option>
+                    <option value="familiare" class="translate" data-bs="Porodična Hitnost" data-it="Emergenza Familiare">Porodična Hitnost</option>
+                    <option value="abitativa" class="translate" data-bs="Stambeni Problemi" data-it="Problemi Abitativi">Stambeni Problemi</option>
+                    <option value="altro" class="translate" data-bs="Drugo" data-it="Altro">Drugo</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="sm:col-span-2">
+            <label for="importo" class="block text-sm/6 font-semibold text-gray-900 translate" data-bs="Traženi Iznos (€)" data-it="Importo Richiesto (€)">Traženi Iznos (€)</label>
+            <div class="mt-2.5">
+                <input type="number" name="importo" id="importo" min="1" class="block w-full rounded-md border border-gray-300 bg-white px-3.5 py-2 text-gray-900 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600">
+            </div>
+        </div>
+        
+        <div class="sm:col-span-2">
+            <label for="descrizione" class="block text-sm/6 font-semibold text-gray-900 translate" data-bs="Opis Hitne Situacije" data-it="Descrizione dell'Emergenza">Opis Hitne Situacije</label>
+            <div class="mt-2.5">
+                <textarea name="descrizione" id="descrizione" rows="4" required class="block w-full rounded-md border border-gray-300 bg-white px-3.5 py-2 text-gray-900 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600"></textarea>
+            </div>
+        </div>
+        
+        <div class="sm:col-span-2">
+            <label class="block text-sm/6 font-semibold text-gray-900 mb-2.5 translate" data-bs="Nivo Hitnosti" data-it="Livello di Urgenza">Nivo Hitnosti</label>
+            <div class="flex gap-x-6">
+                <div class="flex items-center gap-x-2">
+                    <input type="radio" id="urgenza-bassa" name="urgenza" value="bassa" class="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600">
+                    <label for="urgenza-bassa" class="text-sm/6 font-medium text-gray-900 translate" data-bs="Niska" data-it="Bassa">Niska</label>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <input type="radio" id="urgenza-media" name="urgenza" value="media" class="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600">
+                    <label for="urgenza-media" class="text-sm/6 font-medium text-gray-900 translate" data-bs="Srednja" data-it="Media">Srednja</label>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <input type="radio" id="urgenza-alta" name="urgenza" value="alta" class="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" checked>
+                    <label for="urgenza-alta" class="text-sm/6 font-medium text-gray-900 translate" data-bs="Visoka" data-it="Alta">Visoka</label>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- aggiungo un div per il messaggio di conferma, inizialmente nascosto -->
+    <div id="formSuccessMessage" class="hidden mt-8 p-4 rounded-md bg-green-50 border border-green-200 text-center">
+        <div class="flex items-center justify-center">
+            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <p class="text-green-700 font-medium translate" data-bs="Vaš zahtjev je uspješno poslan! Kontaktirat ćemo vas uskoro." data-it="La tua richiesta è stata inviata con successo! Ti contatteremo presto.">Vaš zahtjev je uspješno poslan! Kontaktirat ćemo vas uskoro.</p>
         </div>
     </div>
     
-    <script>
+    <!-- Aggiungi un messaggio di errore, inizialmente nascosto -->
+    <div id="formErrorMessage" class="hidden mt-8 p-4 rounded-md bg-red-50 border border-red-200 text-center">
+        <div class="flex items-center justify-center">
+            <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <p class="text-red-700 font-medium translate" data-bs="Došlo je do greške. Molimo pokušajte ponovo." data-it="Si è verificato un errore. Per favore riprova.">Došlo je do greške. Molimo pokušajte ponovo.</p>
+        </div>
+    </div>
+    
+    <div class="mt-10">
+        <button type="submit" id="submitButton" class="block w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-blue-600 translate" data-bs="Pošalji zahtjev za pomoć" data-it="Invia richiesta di aiuto">Pošalji zahtjev za pomoć</button>
+        
+        <!-- Aggiungi un pulsante di caricamento, inizialmente nascosto -->
+        <button type="button" id="loadingButton" disabled class="hidden w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm" data-bs="Slanje..." data-it="Invio in corso...">
+            <svg class="animate-spin h-5 w-5 text-white inline-block mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="translate" data-bs="Slanje..." data-it="Invio in corso...">Slanje...</span>
+        </button>
+    </div>
+    <p class="text-sm text-gray-500 mt-4 text-center translate" data-bs="*Svaki zahtjev će biti pažljivo razmotren od strane odbora zajednice i tretiran s potpunom diskrecijom." data-it="*Ogni richiesta sarà attentamente valutata dal comitato della comunità e trattata con completa discrezione.">*Svaki zahtjev će biti pažljivo razmotren od strane odbora zajednice i tretiran s potpunom diskrecijom.</p>
+</form>
+    </section>
+    
 
-    </script>
+<!-- Contatti Section - Team di Amministratori -->
+<section id="contatti" class="bg-white py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+            <h2 class="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl translate" data-bs="Kontakt" data-it="Contatti">Kontakt</h2>
+            <p class="mt-2 text-lg/8 text-gray-600 translate" data-bs="Upoznajte naše administratore koji vode zajednicu. Ne ustručavajte se kontaktirati ih za bilo kakve informacije." data-it="Conosci i nostri amministratori che guidano la comunità. Non esitare a contattarli per qualsiasi informazione.">Upoznajte naše administratore koji vode zajednicu. Ne ustručavajte se kontaktirati ih za bilo kakve informacije.</p>
+        </div>
+        
+        <div class="mx-auto mt-16 max-w-5xl">
+            <div class="grid gap-x-8 gap-y-12 grid-cols-1 md:grid-cols-3">
+                <!-- Amministratore 1 -->
+                <div class="flex flex-col items-center text-center">
+                    <img class="w-32 h-32 rounded-full object-cover mb-6 border-4 border-blue-100" src="/api/placeholder/300/300" alt="Admin 1" />
+                    <h3 class="text-lg font-semibold text-gray-900">[Ime i prezime]</h3>
+                    <p class="text-sm text-gray-500 mb-3 translate" data-bs="Funkcija" data-it="Funzione">Funkcija</p>
+                    <div class="w-12 h-1 bg-blue-600 mb-4 rounded-full"></div>
+                    <div class="space-y-2 w-full">
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="flex-none w-6 h-6 flex items-center justify-center rounded-full bg-blue-100">
+                                <i class="fas fa-phone text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">+39 xxx xxx xxxx</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="flex-none w-6 h-6 flex items-center justify-center rounded-full bg-blue-100">
+                                <i class="fas fa-envelope text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">email@esempio.it</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Amministratore 2 -->
+                <div class="flex flex-col items-center text-center">
+                    <img class="w-32 h-32 rounded-full object-cover mb-6 border-4 border-blue-100" src="/api/placeholder/300/300" alt="Admin 2" />
+                    <h3 class="text-lg font-semibold text-gray-900">[Ime i prezime]</h3>
+                    <p class="text-sm text-gray-500 mb-3 translate" data-bs="Funkcija" data-it="Funzione">Funkcija</p>
+                    <div class="w-12 h-1 bg-blue-600 mb-4 rounded-full"></div>
+                    <div class="space-y-2 w-full">
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="flex-none w-6 h-6 flex items-center justify-center rounded-full bg-blue-100">
+                                <i class="fas fa-phone text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">+39 xxx xxx xxxx</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="flex-none w-6 h-6 flex items-center justify-center rounded-full bg-blue-100">
+                                <i class="fas fa-envelope text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">email@esempio.it</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Amministratore 3 -->
+                <div class="flex flex-col items-center text-center">
+                    <img class="w-32 h-32 rounded-full object-cover mb-6 border-4 border-blue-100" src="/api/placeholder/300/300" alt="Admin 3" />
+                    <h3 class="text-lg font-semibold text-gray-900">[Ime i prezime]</h3>
+                    <p class="text-sm text-gray-500 mb-3 translate" data-bs="Funkcija" data-it="Funzione">Funkcija</p>
+                    <div class="w-12 h-1 bg-blue-600 mb-4 rounded-full"></div>
+                    <div class="space-y-2 w-full">
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="flex-none w-6 h-6 flex items-center justify-center rounded-full bg-blue-100">
+                                <i class="fas fa-phone text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">+39 xxx xxx xxxx</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="flex-none w-6 h-6 flex items-center justify-center rounded-full bg-blue-100">
+                                <i class="fas fa-envelope text-blue-600 text-xs"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">email@esempio.it</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informazioni generali della comunità -->
+        <div class="mx-auto mt-20 max-w-lg rounded-xl bg-gray-50 p-8 shadow-sm ring-1 ring-gray-200">
+            <div class="flex gap-4 items-start">
+                <div class="flex-none">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                        <i class="fas fa-map-marker-alt text-blue-600"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900 translate" data-bs="Sjedište zajednice" data-it="Sede della comunità">Sjedište zajednice</h3>
+                    <p class="mt-2 text-gray-600">Narzole (CN)<br>CAP: 12068<br>Italia</p>
+                </div>
+            </div>
+         
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-10 sm:py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0 text-center md:text-left">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 translate" data-bs="Solidarna Zajednica Restelica" data-it="Comunità Solidale Restelica">Solidarna Zajednica Restelica</h2>
+                    <p class="text-blue-200 translate" data-bs="Zajedno za bolju budućnost" data-it="Insieme per un futuro migliore">Zajedno za bolju budućnost</p>
+                </div>
+                <div class="flex space-x-4 sm:space-x-6">
+                    <a href="#" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-600 transition-colors transform hover:scale-110 transition-transform">
+                        <i class="fab fa-facebook-f text-base sm:text-lg"></i>
+                    </a>
+                    <a href="#" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-600 transition-colors transform hover:scale-110 transition-transform">
+                        <i class="fab fa-instagram text-base sm:text-lg"></i>
+                    </a>
+                    <a href="#" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-blue-700 flex items-center justify-center hover:bg-blue-600 transition-colors transform hover:scale-110 transition-transform">
+                        <i class="fab fa-whatsapp text-base sm:text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-blue-700 text-center text-sm text-blue-300">
+                <p class="translate" data-bs="&copy; 2025 Solidarna Zajednica Restelica. Sva prava zadržana." data-it="&copy; 2025 Comunità Solidale Restelica. Tutti i diritti riservati.">&copy; 2025 Solidarna Zajednica Restelica. Sva prava zadržana.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -36,7 +36,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+     // Copy IBAN functionality
+const copyButton = document.getElementById('copy-iban');
+const ibanText = document.getElementById('iban-number');
+const tooltip = document.getElementById('copy-tooltip');
 
+if (copyButton && ibanText && tooltip) {
+    copyButton.addEventListener('click', function() {
+        // Create a temporary textarea element to copy the text
+        const textarea = document.createElement('textarea');
+        textarea.value = ibanText.textContent;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        // Show the tooltip
+        tooltip.classList.remove('hidden');
+        
+        // Hide the tooltip after 2 seconds
+        setTimeout(function() {
+            tooltip.classList.add('hidden');
+        }, 2000);
+    });
+}
     // Sistema di traduzione
     let currentLanguage = 'bs'; // Lingua predefinita: Bosniaco
     
