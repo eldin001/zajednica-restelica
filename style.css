@@ -47,19 +47,46 @@ section {
     gap: 0; /* Rimuoviamo il gap per permettere al bottone di traduzione di espandersi */
 }
 
+/* Language Switcher - New compact style */
 .language-switcher {
     position: relative;
     transition: all 0.3s ease;
     z-index: 1000;
-    width: 100%; /* Occupa tutto lo spazio disponibile */
-    margin-bottom: 0; /* Nessun margine inferiore */
+    width: fit-content; /* Initially just fit the icon */
+    margin-bottom: 0;
+    transform-origin: right center;
 }
 
 .language-switcher button {
     border-radius: 50px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    width: 100%; /* Il bottone occupa tutta la larghezza del container */
+    min-width: 40px; /* Minimum width for icon only */
+    padding: 8px; /* Adjust padding for icon-only state */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.language-switcher.expanded button {
+    padding: 8px 16px 8px 12px; /* Adjusted padding when expanded */
+    justify-content: flex-start;
+}
+
+.language-switcher .button-text {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-left: 0;
+}
+
+.language-switcher.expanded .button-text {
+    max-width: 200px;
+    margin-left: 8px;
+    opacity: 1;
 }
 
 .language-switcher:hover,

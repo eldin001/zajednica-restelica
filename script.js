@@ -27,12 +27,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Show/hide the back to top button based on scroll
+    // Show/hide the back to top button and expand language switcher based on scroll
     function toggleBackToTopButton() {
+        const languageSwitcher = document.querySelector('.language-switcher');
+        
         if (window.scrollY > 300) {
             backToTopButton.classList.add('visible');
+            // Expand language switcher to show text
+            if (languageSwitcher) {
+                languageSwitcher.classList.add('expanded');
+            }
         } else {
             backToTopButton.classList.remove('visible');
+            // Collapse language switcher to show only icon
+            if (languageSwitcher) {
+                languageSwitcher.classList.remove('expanded');
+            }
         }
     }
     
