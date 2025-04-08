@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backToTopButton = document.createElement('button');
     backToTopButton.id = 'back-to-top-button';
     backToTopButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>';
-    backToTopButton.className = 'bg-blue-600 text-white opacity-0 transition-all duration-300';
+    backToTopButton.className = 'bg-blue-600 text-white';
     floatingButtonsContainer.appendChild(backToTopButton);
     
     // Function to scroll back to top
@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show/hide the back to top button based on scroll
     function toggleBackToTopButton() {
         if (window.scrollY > 300) {
-            backToTopButton.classList.replace('opacity-0', 'opacity-100');
+            backToTopButton.classList.add('visible');
         } else {
-            backToTopButton.classList.replace('opacity-100', 'opacity-0');
+            backToTopButton.classList.remove('visible');
         }
     }
     
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-
+    // Smooth scrolling for all internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -85,14 +85,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-
+    // Copy IBAN functionality
     const copyButton = document.getElementById('copy-iban');
     const ibanText = document.getElementById('iban-number');
     const tooltip = document.getElementById('copy-tooltip');
 
     if (copyButton && ibanText && tooltip) {
         copyButton.addEventListener('click', function() {
-
+            // Create a temporary textarea to hold the text
             const textarea = document.createElement('textarea');
             textarea.value = ibanText.textContent;
             document.body.appendChild(textarea);
@@ -100,27 +100,27 @@ document.addEventListener('DOMContentLoaded', function() {
             document.execCommand('copy');
             document.body.removeChild(textarea);
             
-
+            // Show the tooltip
             tooltip.classList.remove('hidden');
             
-
+            // Hide the tooltip after 2 seconds
             setTimeout(function() {
                 tooltip.classList.add('hidden');
             }, 2000);
         });
     }
 
-
-    let currentLanguage = 'bs'; 
+    // Translation functionality
+    let currentLanguage = 'bs'; // Default language is Bosnian
     
-
+    // Translation button click handler
     const translateButton = document.getElementById('translate-button');
     if (translateButton) {
         translateButton.addEventListener('click', function() {
             currentLanguage = currentLanguage === 'bs' ? 'it' : 'bs';
             translatePage();
             
-
+            // Update button text
             const buttonText = translateButton.querySelector('span');
             if (buttonText) {
                 buttonText.textContent = buttonText.getAttribute(`data-${currentLanguage}`);
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-
+    // Function to translate all elements with 'translate' class
     function translatePage() {
         const elementsToTranslate = document.querySelectorAll('.translate');
         
@@ -138,166 +138,115 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (element.tagName.toLowerCase() === 'input' || 
                     element.tagName.toLowerCase() === 'textarea' || 
                     element.tagName.toLowerCase() === 'option') {
-
+                    // For form elements
                     if (element.getAttribute('placeholder')) {
                         element.setAttribute('placeholder', translatedText);
                     } else {
                         element.value = translatedText;
                     }
                 } else {
-
-                    element.textContent = translatedText;
+                    // For regular elements
+                    element.innerHTML = translatedText;
                 }
             }
         });
         
-
+        // Update page language attribute
         document.documentElement.lang = currentLanguage;
     }
 
-
+    // CAPTCHA and form handling - FIXED VERSION
     const form = document.getElementById('assistanceForm');
     const submitButton = document.getElementById('submitButton');
     const loadingButton = document.getElementById('loadingButton');
     const successMessage = document.getElementById('formSuccessMessage');
     const errorMessage = document.getElementById('formErrorMessage');
+    const captchaChallenge = document.getElementById('captcha-challenge');
+    const captchaAnswer = document.getElementById('captcha-answer');
+    const refreshCaptchaButton = document.getElementById('refresh-captcha');
+    const captchaError = document.getElementById('captcha-error');
 
+    let currentCaptchaResult = 0;
+
+    // Function to generate a new CAPTCHA
+    function generateCaptcha() {
+        const operations = ['+', '-', '×'];
+        const operation = operations[Math.floor(Math.random() * 2)]; 
+        let num1, num2;
+        
+        if (operation === '+') {
+            num1 = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * 10) + 1;
+            currentCaptchaResult = num1 + num2;
+        } else if (operation === '-') {
+            num1 = Math.floor(Math.random() * 10) + 11; 
+            num2 = Math.floor(Math.random() * 10) + 1;
+            currentCaptchaResult = num1 - num2;
+        } else { // '×'
+            num1 = Math.floor(Math.random() * 5) + 1;
+            num2 = Math.floor(Math.random() * 5) + 1;
+            currentCaptchaResult = num1 * num2;
+        }
+        
+        captchaChallenge.textContent = `${num1} ${operation} ${num2}`;
+        captchaAnswer.value = '';
+        hideCaptchaError();
+    }
+
+    // Function to show CAPTCHA error
+    function showCaptchaError() {
+        captchaError.classList.remove('hidden');
+    }
+
+    // Function to hide CAPTCHA error
+    function hideCaptchaError() {
+        captchaError.classList.add('hidden');
+    }
+
+    // Function to check if CAPTCHA is correct
+    function isCaptchaCorrect() {
+        return parseInt(captchaAnswer.value, 10) === currentCaptchaResult;
+    }
+
+    // Initialize CAPTCHA if elements exist
+    if (captchaChallenge && captchaAnswer && refreshCaptchaButton) {
+        generateCaptcha();
+        
+        refreshCaptchaButton.addEventListener('click', generateCaptcha);
+    }
+
+    // Form submission handling - UNIFIED VERSION
     if (form && submitButton && loadingButton && successMessage && errorMessage) {
+        // Remove any existing event listeners 
+        const newForm = form.cloneNode(true);
+        form.parentNode.replaceChild(newForm, form);
+        
+        // Use the new form reference
+        const form = document.getElementById('assistanceForm');
+        
+        // Add event listener with CAPTCHA validation
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-
-            submitButton.classList.add('hidden');
-            loadingButton.classList.remove('hidden');
-            
-
-            successMessage.classList.add('hidden');
-            errorMessage.classList.add('hidden');
-            
-
-            fetch(form.action, {
-                method: form.method,
-                body: new FormData(form),
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Error in server response');
-            })
-            .then(data => {
-
-                successMessage.classList.remove('hidden');
-                
-
-                form.reset();
-                
-
-                successMessage.scrollIntoView({ behavior: 'smooth' });
-                
-
-                loadingButton.classList.add('hidden');
-                submitButton.classList.remove('hidden');
-            })
-            .catch(error => {
-
-                errorMessage.classList.remove('hidden');
-                
-                // Scroll to error message
-                errorMessage.scrollIntoView({ behavior: 'smooth' });
-                
-                // Hide loading button and show submit button
-                loadingButton.classList.add('hidden');
-                submitButton.classList.remove('hidden');
-                
-                console.error('Error:', error);
-            });
-        });
-    }
-
-
-
-const captchaChallenge = document.getElementById('captcha-challenge');
-const captchaAnswer = document.getElementById('captcha-answer');
-const refreshCaptchaButton = document.getElementById('refresh-captcha');
-const captchaError = document.getElementById('captcha-error');
-const formSubmitButton = document.getElementById('submitButton');
-
-let currentCaptchaResult = 0;
-
-
-function generateCaptcha() {
-    const operations = ['+', '-', '×'];
-    const operation = operations[Math.floor(Math.random() * 2)]; 
-    let num1, num2;
-    
-    if (operation === '+') {
-        num1 = Math.floor(Math.random() * 10) + 1;
-        num2 = Math.floor(Math.random() * 10) + 1;
-        currentCaptchaResult = num1 + num2;
-    } else if (operation === '-') {
-        num1 = Math.floor(Math.random() * 10) + 11; 
-        num2 = Math.floor(Math.random() * 10) + 1;
-        currentCaptchaResult = num1 - num2;
-    } else { // '×'
-        num1 = Math.floor(Math.random() * 5) + 1;
-        num2 = Math.floor(Math.random() * 5) + 1;
-        currentCaptchaResult = num1 * num2;
-    }
-    
-    captchaChallenge.textContent = `${num1} ${operation} ${num2}`;
-    captchaAnswer.value = '';
-    hideCaptchaError();
-}
-
-
-function showCaptchaError() {
-    captchaError.classList.remove('hidden');
-}
-
-
-function hideCaptchaError() {
-    captchaError.classList.add('hidden');
-}
-
-
-function isCaptchaCorrect() {
-    return parseInt(captchaAnswer.value, 10) === currentCaptchaResult;
-}
-
-
-if (captchaChallenge && captchaAnswer && refreshCaptchaButton) {
-    generateCaptcha();
-    
-    refreshCaptchaButton.addEventListener('click', generateCaptcha);
-    
-
-    if (form) {
-        const originalSubmitHandler = form.onsubmit;
-        
-        form.onsubmit = function(e) {
-            e.preventDefault();
-            
+            // Check CAPTCHA first
             if (!isCaptchaCorrect()) {
                 showCaptchaError();
                 captchaAnswer.focus();
                 return false;
             }
             
+            // CAPTCHA is correct - hide error message
             hideCaptchaError();
             
-
+            // Show loading state
             submitButton.classList.add('hidden');
             loadingButton.classList.remove('hidden');
             
-
+            // Hide any existing messages
             successMessage.classList.add('hidden');
             errorMessage.classList.add('hidden');
             
-
+            // Submit the form
             fetch(form.action, {
                 method: form.method,
                 body: new FormData(form),
@@ -312,30 +261,30 @@ if (captchaChallenge && captchaAnswer && refreshCaptchaButton) {
                 throw new Error('Error in server response');
             })
             .then(data => {
-
+                // Show success message
                 successMessage.classList.remove('hidden');
                 
-
+                // Reset form
                 form.reset();
                 
-
+                // Generate new CAPTCHA
                 generateCaptcha();
                 
-
+                // Scroll to success message
                 successMessage.scrollIntoView({ behavior: 'smooth' });
                 
-
+                // Restore submit button
                 loadingButton.classList.add('hidden');
                 submitButton.classList.remove('hidden');
             })
             .catch(error => {
-
+                // Show error message
                 errorMessage.classList.remove('hidden');
                 
-
+                // Scroll to error message
                 errorMessage.scrollIntoView({ behavior: 'smooth' });
                 
-
+                // Restore submit button
                 loadingButton.classList.add('hidden');
                 submitButton.classList.remove('hidden');
                 
@@ -343,7 +292,6 @@ if (captchaChallenge && captchaAnswer && refreshCaptchaButton) {
             });
             
             return false;
-        };
+        });
     }
-}
 });
